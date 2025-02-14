@@ -13,7 +13,7 @@ const Navbar = () => {
         const response = await getMainData();
         setMainData(response);
       } catch (error) {
-        console.error('Error fetching main data:', error);
+        // Sessizce hata durumunu handle et
       }
     };
 

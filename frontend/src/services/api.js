@@ -180,8 +180,7 @@ export const getMainData = async () => {
     };
 
   } catch (error) {
-    console.error('Main data error:', error);
-    throw error;
+    return null;
   }
 };
 

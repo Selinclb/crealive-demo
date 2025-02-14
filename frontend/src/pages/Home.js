@@ -14,7 +14,7 @@ const Home = () => {
           setMainData(data);
         }
       } catch (error) {
-        console.error('Error fetching main data:', error);
+        
       }
     };
 
