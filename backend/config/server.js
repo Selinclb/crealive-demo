@@ -1,7 +1,7 @@
 module.exports = ({ env }) => ({
   host: env('HOST', '0.0.0.0'),
   port: env.int('PORT', process.env.PORT || 1337),
-  url: env('PUBLIC_URL', 'https://crealive.onrender.com'),
+  url: env('PUBLIC_URL', 'https://crealive-demo.onrender.com'),
   app: {
     keys: env.array('APP_KEYS'),
   },
