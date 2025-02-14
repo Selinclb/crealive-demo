@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_common_social_links",
+  "info": {
+    "displayName": "social_links",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "Platform": {
+      "type": "string"
+    },
+    "URL": {
+      "type": "string"
+    }
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "kind": "collectionType",
+  "collectionName": "abouts",
+  "info": {
+    "singularName": "about",
+    "pluralName": "abouts",
+    "displayName": "About",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "bio_links": {
+      "type": "json"
+    },
+    "bio_title": {
+      "type": "string"
+    },
+    "interests_title": {
+      "type": "string"
+    },
+    "interests": {
+      "type": "json"
+    },
+    "inspiration_text": {
+      "type": "richtext"
+    },
+    "bio_text": {
+      "type": "richtext"
+    }
+  }
+}
