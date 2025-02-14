@@ -170,23 +170,24 @@ export const getMainData = async () => {
       return null;
     }
 
+    // Strapi'nin veri yapısını direkt kullanalım
     const mainData = response.data.data[0];
-    console.log('Main data being returned:', mainData);
-    
-    // Veri yapısını doğrulayalım
-    if (!mainData.attributes) {
-      console.error('No attributes found in main data');
-      return null;
+    console.log('Main data from API:', mainData);
+
+    // Veri yapısını doğrulayalım ve direkt döndürelim
+    if (mainData && mainData.Hero_Title && mainData.Hero_Subtitle) {
+      return {
+        id: mainData.id,
+        attributes: {
+          Hero_Title: mainData.Hero_Title,
+          Hero_Subtitle: mainData.Hero_Subtitle,
+          Logo: mainData.Logo
+        }
+      };
     }
 
-    return {
-      id: mainData.id,
-      attributes: {
-        Hero_Title: mainData.attributes.Hero_Title,
-        Hero_Subtitle: mainData.attributes.Hero_Subtitle,
-        Logo: mainData.attributes.Logo
-      }
-    };
+    return mainData; // Eğer yukarıdaki format uymazsa, ham veriyi döndür
+
   } catch (error) {
     console.error('Main data error:', {
       message: error.message,
