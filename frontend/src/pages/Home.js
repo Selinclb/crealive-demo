@@ -9,8 +9,8 @@ const Home = () => {
     const fetchMainData = async () => {
       try {
         const response = await getMainData();
+        console.log('Home main data:', response);
         setMainData(response);
-        console.log('Main data in Home:', response);
       } catch (error) {
         console.error('Error fetching main data:', error);
       }
@@ -18,6 +18,10 @@ const Home = () => {
 
     fetchMainData();
   }, []);
+
+  // API'den gelen veriyi kontrol edelim
+  const heroTitle = mainData?.attributes?.Hero_Title;
+  const heroSubtitle = mainData?.attributes?.Hero_Subtitle;
 
   const handleScroll = () => {
     const navbarHeight = 80;
@@ -32,9 +36,9 @@ const Home = () => {
   return (
     <HomeContainer>
       <MainContent>
-        <Title>{mainData?.attributes?.Hero_Title}</Title>
+        <Title>{heroTitle || 'Loading...'}</Title>
         <SubtitleContainer>
-          <Subtitle>{mainData?.attributes?.Hero_Subtitle}</Subtitle>
+          <Subtitle>{heroSubtitle || 'Loading...'}</Subtitle>
         </SubtitleContainer>
         <ScrollArrow onClick={handleScroll}>
           <ArrowContainer>

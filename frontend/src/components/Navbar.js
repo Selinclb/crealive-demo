@@ -11,6 +11,7 @@ const Navbar = () => {
     const fetchMainData = async () => {
       try {
         const response = await getMainData();
+        console.log('Navbar main data:', response);
         setMainData(response);
       } catch (error) {
         console.error('Error fetching main data:', error);
@@ -20,16 +21,18 @@ const Navbar = () => {
     fetchMainData();
   }, []);
 
+  const logoUrl = mainData?.attributes?.Logo?.data?.attributes?.url || '/default-logo.png';
+
   return (
     <Nav>
       <NavContainer>
         <LogoLink to="/">
-          <LogoImage 
-            src={mainData?.attributes?.Logo?.data?.attributes?.url 
-              ? `${process.env.REACT_APP_API_URL || 'https://crealive-demo.onrender.com'}${mainData.attributes.Logo.data.attributes.url}`
-              : ''} 
-            alt="Logo" 
-          />
+          {mainData?.attributes?.Logo ? (
+            <LogoImage 
+              src={`${process.env.REACT_APP_API_URL || 'https://crealive-demo.onrender.com'}${logoUrl}`}
+              alt="Logo" 
+            />
+          ) : null}
         </LogoLink>
 
         <MenuButton type="button" onClick={() => setIsOpen(!isOpen)}>
