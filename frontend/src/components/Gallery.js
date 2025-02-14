@@ -2,8 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { getGalleryItems } from '../services/api';
 
-const BASE_URL = process.env.REACT_APP_API_URL || 'https://crealive-demo.onrender.com';
-
 // Styled components
 const GallerySection = styled.section`
   padding: 4rem 0;
@@ -112,7 +110,7 @@ const Gallery = () => {
             category: item.Category || 'Uncategorized',
             type: item.Type || 'image',
             source: item.Media?.[0]?.url 
-              ? `${BASE_URL}${item.Media[0].url}`
+              ? `http://localhost:1337${item.Media[0].url}`
               : null
           }));
           setItems(formattedItems.filter(item => item.source !== null));
