@@ -162,9 +162,8 @@ export const getAboutData = async () => {
 export const getMainData = async () => {
   try {
     const response = await axiosInstance.get('/mains?populate=*');
-    console.log('Main data success:', response.data);
-    const data = response.data.data[0];
-    return fixMediaUrls(data);
+    console.log('Main data from API:', response.data);
+    return response.data.data[0]; 
   } catch (error) {
     console.error('Main data error:', {
       status: error.response?.status,

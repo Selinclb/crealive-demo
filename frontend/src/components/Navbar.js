@@ -11,9 +11,7 @@ const Navbar = () => {
     const fetchMainData = async () => {
       try {
         const response = await getMainData();
-        if (response?.data?.[0]) {
-          setMainData(response.data[0]);
-        }
+        setMainData(response);
       } catch (error) {
         console.error('Error fetching main data:', error);
       }
@@ -27,7 +25,9 @@ const Navbar = () => {
       <NavContainer>
         <LogoLink to="/">
           <LogoImage 
-            src={`http://localhost:1337${mainData?.Logo?.url}`} 
+            src={mainData?.attributes?.Logo?.data?.attributes?.url 
+              ? `${process.env.REACT_APP_API_URL || 'https://crealive-demo.onrender.com'}${mainData.attributes.Logo.data.attributes.url}`
+              : ''} 
             alt="Logo" 
           />
         </LogoLink>

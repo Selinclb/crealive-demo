@@ -9,9 +9,8 @@ const Home = () => {
     const fetchMainData = async () => {
       try {
         const response = await getMainData();
-        if (response?.data?.[0]) {
-          setMainData(response.data[0]);
-        }
+        setMainData(response);
+        console.log('Main data in Home:', response);
       } catch (error) {
         console.error('Error fetching main data:', error);
       }
@@ -33,9 +32,9 @@ const Home = () => {
   return (
     <HomeContainer>
       <MainContent>
-        <Title>{mainData?.Hero_Title}</Title>
+        <Title>{mainData?.attributes?.Hero_Title}</Title>
         <SubtitleContainer>
-          <Subtitle>{mainData?.Hero_Subtitle}</Subtitle>
+          <Subtitle>{mainData?.attributes?.Hero_Subtitle}</Subtitle>
         </SubtitleContainer>
         <ScrollArrow onClick={handleScroll}>
           <ArrowContainer>
