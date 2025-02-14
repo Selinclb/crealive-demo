@@ -14,7 +14,7 @@ module.exports = [
       },
       cors: {
         enabled: true,
-        origin: ['http://localhost:3000', 'https://crealive-demo.onrender.com'],
+        origin: ['http://localhost:3000', 'https://crealive.onrender.com'],
         headers: ['*'],
         methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'],
       },
