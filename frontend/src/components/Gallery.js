@@ -104,10 +104,19 @@ const Gallery = () => {
       try {
         const response = await getGalleryItems();
         if (response && response.length > 0) {
-          setItems(response.filter(item => item.source !== null));
+          const formattedItems = response.map(item => ({
+            id: item.id,
+            title: item.Title || 'Untitled',
+            category: item.Category || 'Uncategorized',
+            type: item.Type || 'image',
+            source: item.Media?.[0]?.url 
+              ? `http://localhost:1337${item.Media[0].url}`
+              : null
+          }));
+          setItems(formattedItems.filter(item => item.source !== null));
         }
       } catch (err) {
-        // Sessizce hata durumunu handle et
+      
       }
     };
     fetchGallery();
