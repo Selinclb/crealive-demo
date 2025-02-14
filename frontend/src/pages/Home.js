@@ -28,6 +28,7 @@ const Home = () => {
   // API'den gelen veriyi kontrol edelim
   const heroTitle = mainData?.attributes?.Hero_Title || mainData?.Hero_Title;
   const heroSubtitle = mainData?.attributes?.Hero_Subtitle || mainData?.Hero_Subtitle;
+  
 
   const handleScroll = () => {
     const navbarHeight = 80;

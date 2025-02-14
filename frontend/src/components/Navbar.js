@@ -21,7 +21,7 @@ const Navbar = () => {
     fetchMainData();
   }, []);
 
-  const logoUrl = mainData?.attributes?.Logo?.data?.attributes?.url || '/default-logo.png';
+  const logoUrl = mainData?.attributes?.Logo?.data?.attributes?.url || mainData?.Logo?.data?.attributes?.url;
 
   return (
     <Nav>
