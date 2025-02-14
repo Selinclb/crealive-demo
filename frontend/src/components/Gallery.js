@@ -105,28 +105,20 @@ const Gallery = () => {
     const fetchGallery = async () => {
       try {
         const response = await getGalleryItems();
-        console.log('Gallery API Response:', response);
-        
         if (response && response.length > 0) {
-          const formattedItems = response.map(item => {
-            const mediaUrl = item.Media?.[0]?.url;
-            console.log('Media URL:', mediaUrl);
-            console.log('Full URL:', `${BASE_URL}${mediaUrl}`);
-            
-            return {
-              id: item.id,
-              title: item.Title || 'Untitled',
-              category: item.Category || 'Uncategorized',
-              type: item.Type || 'image',
-              source: mediaUrl ? `${BASE_URL}${mediaUrl}` : null
-            };
-          });
-          
-          console.log('Formatted Items:', formattedItems);
+          const formattedItems = response.map(item => ({
+            id: item.id,
+            title: item.Title || 'Untitled',
+            category: item.Category || 'Uncategorized',
+            type: item.Type || 'image',
+            source: item.Media?.[0]?.url 
+              ? `${BASE_URL}${item.Media[0].url}`
+              : null
+          }));
           setItems(formattedItems.filter(item => item.source !== null));
         }
       } catch (err) {
-        console.error('Gallery fetch error:', err);
+        // Sessizce hata durumunu handle et
       }
     };
     fetchGallery();
