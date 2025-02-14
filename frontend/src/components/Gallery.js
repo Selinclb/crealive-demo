@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { getGalleryItems } from '../services/api';
 
+const BASE_URL = process.env.REACT_APP_API_URL || 'https://crealive-demo.onrender.com';
+
 // Styled components
 const GallerySection = styled.section`
   padding: 4rem 0;
@@ -110,20 +112,17 @@ const Gallery = () => {
             category: item.Category || 'Uncategorized',
             type: item.Type || 'image',
             source: item.Media?.[0]?.url 
-              ? `http://localhost:1337${item.Media[0].url}`
+              ? `${BASE_URL}${item.Media[0].url}`
               : null
           }));
           setItems(formattedItems.filter(item => item.source !== null));
         }
       } catch (err) {
-        console.error('Error:', err);
+        // Sessizce hata durumunu handle et
       }
     };
     fetchGallery();
   }, []);
-
-  // Sonsuz döngü için projeleri üç kez çoğaltıyoruz
-  const triplicatedItems = [...items, ...items, ...items];
 
   useEffect(() => {
     const scrollContainer = scrollRef.current;
@@ -132,15 +131,15 @@ const Gallery = () => {
     
     const scroll = () => {
       if (scrollContainer && !isHovered) {
-        // Sola doğru kaydırma
-        scrollPos += 1; // Hızı artırdık
-        scrollContainer.scrollLeft = scrollPos;
-
-        // Ortadaki set'e geldiğimizde başa dön
-        if (scrollPos >= (scrollContainer.scrollWidth / 3)) {
+        scrollPos += 1;
+        
+        // Scroll pozisyonu container genişliğini aştığında
+        if (scrollPos >= scrollContainer.scrollWidth - scrollContainer.clientWidth) {
+          // Başa dön
           scrollPos = 0;
-          scrollContainer.scrollLeft = 0;
         }
+        
+        scrollContainer.scrollLeft = scrollPos;
       }
       animationFrameId = requestAnimationFrame(scroll);
     };
@@ -184,7 +183,7 @@ const Gallery = () => {
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        {triplicatedItems.map((project, index) => (
+        {items.map((project, index) => (
           <ProjectItem 
             key={`${project.id}-${index}`}
             className="project-item"
