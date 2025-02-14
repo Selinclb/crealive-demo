@@ -74,8 +74,21 @@ export const getContact = async () => {
 export const getGalleryItems = async () => {
   try {
     const response = await axiosInstance.get('/galleries?populate=*');
-    const data = response.data.data || [];
-    return fixMediaUrls(data);
+    
+    if (!response.data.data) {
+      return [];
+    }
+
+    return response.data.data.map(item => ({
+      id: item.id,
+      title: item.attributes.Title || 'Untitled',
+      category: item.attributes.Category || 'Uncategorized',
+      type: item.attributes.Type || 'image',
+      source: item.attributes.Media?.data?.[0]?.attributes?.url 
+        ? fixMediaUrl(item.attributes.Media.data[0].attributes.url)
+        : null
+    }));
+
   } catch (error) {
     return [];
   }
@@ -83,14 +96,22 @@ export const getGalleryItems = async () => {
 
 export const getPortfolioItems = async () => {
   try {
-    const response = await axios.get(`${API_URL}/portfolios?populate=*`, {
-      headers: {
-        Authorization: `Bearer ${API_TOKEN}`
-      }
-    });
-    return response.data;
+    const response = await axiosInstance.get('/portfolios?populate=*');
+    
+    if (!response.data.data) {
+      return [];
+    }
+
+    return response.data.data.map(item => ({
+      id: item.id,
+      ...item.attributes,
+      images: item.attributes.images?.data?.map(image => ({
+        url: fixMediaUrl(image.attributes.url)
+      })) || []
+    }));
+
   } catch (error) {
-    throw error;
+    return [];
   }
 };
 
