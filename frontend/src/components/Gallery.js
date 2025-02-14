@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { getGalleryItems } from '../services/api';
 
+const BASE_URL = process.env.REACT_APP_API_URL || 'https://crealive-demo.onrender.com';
+
 // Styled components
 const GallerySection = styled.section`
   padding: 4rem 0;
@@ -104,19 +106,23 @@ const Gallery = () => {
       try {
         const response = await getGalleryItems();
         if (response && response.length > 0) {
-          const formattedItems = response.map(item => ({
-            id: item.id,
-            title: item.Title || 'Untitled',
-            category: item.Category || 'Uncategorized',
-            type: item.Type || 'image',
-            source: item.Media?.[0]?.url 
-              ? `http://localhost:1337${item.Media[0].url}`
-              : null
-          }));
+          const formattedItems = response.map(item => {
+            // Medya URL'sini düzelt
+            const mediaUrl = item.Media?.data?.[0]?.attributes?.url;
+            
+            return {
+              id: item.id,
+              title: item.Title || 'Untitled',
+              category: item.Category || 'Uncategorized',
+              type: item.Type || 'image',
+              source: mediaUrl ? `${BASE_URL}${mediaUrl}` : null
+            };
+          });
+          
           setItems(formattedItems.filter(item => item.source !== null));
         }
       } catch (err) {
-      
+        // Sessizce hata durumunu handle et
       }
     };
     fetchGallery();

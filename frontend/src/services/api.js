@@ -73,9 +73,20 @@ export const getContact = async () => {
 
 export const getGalleryItems = async () => {
   try {
-    const response = await axiosInstance.get('/galleries?populate=*');
-    const data = response.data.data || [];
-    return fixMediaUrls(data);
+    const response = await axiosInstance.get('/galleries?populate=Media');
+    
+    if (!response.data.data) {
+      return [];
+    }
+
+    return response.data.data.map(item => ({
+      id: item.id,
+      Title: item.attributes.Title,
+      Category: item.attributes.Category,
+      Type: item.attributes.Type,
+      Media: item.attributes.Media
+    }));
+
   } catch (error) {
     return [];
   }
