@@ -162,10 +162,34 @@ export const getAboutData = async () => {
 export const getMainData = async () => {
   try {
     const response = await axiosInstance.get('/mains?populate=*');
-    console.log('Main data from API:', response.data);
-    return response.data.data[0]; 
+    console.log('Raw API response:', response.data);
+    
+    // API'den gelen veri yapısını kontrol edelim
+    if (!response.data.data || response.data.data.length === 0) {
+      console.error('No main data found');
+      return null;
+    }
+
+    const mainData = response.data.data[0];
+    console.log('Main data being returned:', mainData);
+    
+    // Veri yapısını doğrulayalım
+    if (!mainData.attributes) {
+      console.error('No attributes found in main data');
+      return null;
+    }
+
+    return {
+      id: mainData.id,
+      attributes: {
+        Hero_Title: mainData.attributes.Hero_Title,
+        Hero_Subtitle: mainData.attributes.Hero_Subtitle,
+        Logo: mainData.attributes.Logo
+      }
+    };
   } catch (error) {
     console.error('Main data error:', {
+      message: error.message,
       status: error.response?.status,
       data: error.response?.data
     });
