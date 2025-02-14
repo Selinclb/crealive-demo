@@ -4,6 +4,38 @@ const BASE_URL = process.env.REACT_APP_API_URL || 'https://crealive-demo.onrende
 const API_URL = `${BASE_URL}/api`;
 const API_TOKEN = process.env.REACT_APP_STRAPI_API_TOKEN;
 
+// Medya URL'lerini düzeltmek için yardımcı fonksiyon
+const fixMediaUrl = (url) => {
+  if (!url) return '';
+  if (url.startsWith('http')) return url;
+  return `${BASE_URL}${url}`;
+};
+
+// Medya URL'lerini içeren nesneleri düzeltmek için yardımcı fonksiyon
+const fixMediaUrls = (data) => {
+  if (!data) return null;
+  
+  if (Array.isArray(data)) {
+    return data.map(item => fixMediaUrls(item));
+  }
+
+  if (typeof data === 'object') {
+    const fixed = {};
+    for (const [key, value] of Object.entries(data)) {
+      if (key === 'url' && typeof value === 'string') {
+        fixed[key] = fixMediaUrl(value);
+      } else if (typeof value === 'object') {
+        fixed[key] = fixMediaUrls(value);
+      } else {
+        fixed[key] = value;
+      }
+    }
+    return fixed;
+  }
+
+  return data;
+};
+
 const axiosInstance = axios.create({
   baseURL: API_URL,
   headers: {
@@ -43,7 +75,8 @@ export const getGalleryItems = async () => {
   try {
     const response = await axiosInstance.get('/galleries?populate=*');
     console.log('Gallery data success:', response.data);
-    return response.data.data || [];
+    const data = response.data.data || [];
+    return fixMediaUrls(data);
   } catch (error) {
     console.error('Gallery data error:', {
       status: error.response?.status,
@@ -128,10 +161,10 @@ export const getAboutData = async () => {
 
 export const getMainData = async () => {
   try {
-    const response = await axiosInstance.get('/mains');
+    const response = await axiosInstance.get('/mains?populate=*');
     console.log('Main data success:', response.data);
-    // Strapi'den gelen veri yapısına göre data array'ini dönüyoruz
-    return response.data.data[0]; // İlk elemanı dönüyoruz çünkü tek kayıt var
+    const data = response.data.data[0];
+    return fixMediaUrls(data);
   } catch (error) {
     console.error('Main data error:', {
       status: error.response?.status,
