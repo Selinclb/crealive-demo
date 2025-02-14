@@ -9,12 +9,8 @@ const Home = () => {
     const fetchMainData = async () => {
       try {
         const response = await getMainData();
-        console.log('Raw main data in Home:', response);
-        
         if (response) {
-          // Veri yapısını kontrol et ve uygun şekilde kullan
           const data = response.attributes ? response : { attributes: response };
-          console.log('Processed main data:', data);
           setMainData(data);
         }
       } catch (error) {
@@ -25,7 +21,6 @@ const Home = () => {
     fetchMainData();
   }, []);
 
-  // API'den gelen veriyi kontrol edelim
   const heroTitle = mainData?.attributes?.Hero_Title || mainData?.Hero_Title;
   const heroSubtitle = mainData?.attributes?.Hero_Subtitle || mainData?.Hero_Subtitle;
   

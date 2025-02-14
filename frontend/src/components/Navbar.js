@@ -11,7 +11,6 @@ const Navbar = () => {
     const fetchMainData = async () => {
       try {
         const response = await getMainData();
-        console.log('Navbar data:', response);
         setMainData(response);
       } catch (error) {
         console.error('Error fetching main data:', error);
@@ -20,9 +19,6 @@ const Navbar = () => {
 
     fetchMainData();
   }, []);
-
-  // Logo URL'ini kontrol edelim
-  console.log('Logo data:', mainData?.attributes?.Logo);
 
   return (
     <Nav>
@@ -34,7 +30,6 @@ const Navbar = () => {
               alt="Logo" 
             />
           ) : (
-            // Logo yüklenene kadar veya logo yoksa gösterilecek kısım
             <div style={{ height: '50px', width: 'auto' }}></div>
           )}
         </LogoLink>

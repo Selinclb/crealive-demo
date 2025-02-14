@@ -74,14 +74,9 @@ export const getContact = async () => {
 export const getGalleryItems = async () => {
   try {
     const response = await axiosInstance.get('/galleries?populate=*');
-    console.log('Gallery data success:', response.data);
     const data = response.data.data || [];
     return fixMediaUrls(data);
   } catch (error) {
-    console.error('Gallery data error:', {
-      status: error.response?.status,
-      data: error.response?.data
-    });
     return [];
   }
 };
@@ -162,17 +157,13 @@ export const getAboutData = async () => {
 export const getMainData = async () => {
   try {
     const response = await axiosInstance.get('/mains?populate=*');
-    console.log('Raw API response:', response.data);
     
     if (!response.data.data || response.data.data.length === 0) {
-      console.error('No main data found');
       return null;
     }
 
     const mainData = response.data.data[0];
-    console.log('Main data from API:', mainData);
 
-    // Logo verilerini de içeren yapı
     return {
       id: mainData.id,
       attributes: {
