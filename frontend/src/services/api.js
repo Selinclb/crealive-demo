@@ -164,36 +164,32 @@ export const getMainData = async () => {
     const response = await axiosInstance.get('/mains?populate=*');
     console.log('Raw API response:', response.data);
     
-    // API'den gelen veri yapısını kontrol edelim
     if (!response.data.data || response.data.data.length === 0) {
       console.error('No main data found');
       return null;
     }
 
-    // Strapi'nin veri yapısını direkt kullanalım
     const mainData = response.data.data[0];
     console.log('Main data from API:', mainData);
 
-    // Veri yapısını doğrulayalım ve direkt döndürelim
-    if (mainData && mainData.Hero_Title && mainData.Hero_Subtitle) {
-      return {
-        id: mainData.id,
-        attributes: {
-          Hero_Title: mainData.Hero_Title,
-          Hero_Subtitle: mainData.Hero_Subtitle,
-          Logo: mainData.Logo
-        }
-      };
-    }
-
-    return mainData; // Eğer yukarıdaki format uymazsa, ham veriyi döndür
+    // Logo verilerini de içeren yapı
+    return {
+      id: mainData.id,
+      attributes: {
+        Hero_Title: mainData.Hero_Title,
+        Hero_Subtitle: mainData.Hero_Subtitle,
+        Logo: mainData.Logo ? {
+          data: {
+            attributes: {
+              url: mainData.Logo.url
+            }
+          }
+        } : null
+      }
+    };
 
   } catch (error) {
-    console.error('Main data error:', {
-      message: error.message,
-      status: error.response?.status,
-      data: error.response?.data
-    });
+    console.error('Main data error:', error);
     throw error;
   }
 };

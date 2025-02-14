@@ -11,7 +11,7 @@ const Navbar = () => {
     const fetchMainData = async () => {
       try {
         const response = await getMainData();
-        console.log('Navbar main data:', response);
+        console.log('Navbar data:', response);
         setMainData(response);
       } catch (error) {
         console.error('Error fetching main data:', error);
@@ -21,18 +21,22 @@ const Navbar = () => {
     fetchMainData();
   }, []);
 
-  const logoUrl = mainData?.attributes?.Logo?.data?.attributes?.url || mainData?.Logo?.data?.attributes?.url;
+  // Logo URL'ini kontrol edelim
+  console.log('Logo data:', mainData?.attributes?.Logo);
 
   return (
     <Nav>
       <NavContainer>
         <LogoLink to="/">
-          {mainData?.attributes?.Logo ? (
+          {mainData?.attributes?.Logo?.data?.attributes?.url ? (
             <LogoImage 
-              src={`${process.env.REACT_APP_API_URL || 'https://crealive-demo.onrender.com'}${logoUrl}`}
+              src={`${process.env.REACT_APP_API_URL || 'https://crealive-demo.onrender.com'}${mainData.attributes.Logo.data.attributes.url}`}
               alt="Logo" 
             />
-          ) : null}
+          ) : (
+            // Logo yüklenene kadar veya logo yoksa gösterilecek kısım
+            <div style={{ height: '50px', width: 'auto' }}></div>
+          )}
         </LogoLink>
 
         <MenuButton type="button" onClick={() => setIsOpen(!isOpen)}>
